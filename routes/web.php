@@ -20,4 +20,11 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'api/v1'], function (){
     Route::put('/subject/{id}', 'SubjectController@update');
     Route::delete('/subject/{id}', 'SubjectController@destroy');
 
+    //Tutorials routes
+    Route::get('/subjects', 'TutorialController@index');
+    Route::post('/subject', 'TutorialController@create');
+    Route::get('/subject/{id}', 'TutorialController@show');
+    Route::put('/subject/{id}', 'TutorialController@update');
+    Route::delete('/subject/{id}', 'TutorialController@destroy');
+
 });
