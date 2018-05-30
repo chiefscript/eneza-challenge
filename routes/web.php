@@ -13,6 +13,8 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'api/v1'], function (){
     Route::put('/course/{id}', 'CourseController@update');
     Route::delete('/course/{id}', 'CourseController@destroy');
 
+    Route::post('/course/subject-assignment', 'CourseController@assignSubject');
+
     //Subjects routes
     Route::get('/subjects', 'SubjectController@index');
     Route::post('/subject', 'SubjectController@create');
