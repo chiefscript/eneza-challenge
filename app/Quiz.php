@@ -9,5 +9,5 @@ class Quiz extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['question'];
+    protected $fillable = ['name'];
 }
