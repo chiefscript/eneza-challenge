@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Question;
 use App\Quiz;
+use App\QuizQuestion;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Validator;
 
 class QuizController extends Controller
 {
     public function index()
     {
-        $quizzes = Quiz::all();
+        $quizzes = Quiz::with('questions')->get();
         return response()->json($quizzes);
     }
 
@@ -66,5 +70,61 @@ class QuizController extends Controller
         $quiz = Quiz::find($id);
         $quiz->delete();
         return response()->json('The quiz has been deleted successfully');
+    }
+
+    public function assignQuestion(Request $request)
+    {
+        $data = $request->only('quiz_id', 'question_id');
+
+        $validator = Validator::make($request->all(), [
+            'quiz_id' => 'required',
+            'question_id' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()->all()
+            ], 422);
+        }
+
+        try {
+            $quiz = Quiz::find($request->quiz_id);
+            $question = Question::find($request->question_id);
+
+            if (!$quiz) {
+                return response()->json([
+                    'message' => 'The quiz selected does not exist',
+                    'status' => 0
+                ]);
+            }
+
+            if (!$question) {
+                return response()->json([
+                    'message' => 'The question selected does not exist',
+                    'status' => 0
+                ]);
+            }
+
+            $quiz_question = QuizQuestion::firstOrNew([
+                'quiz_id' => $request->quiz_id,
+                'question_id' => $request->question_id
+            ]);
+
+            $quiz_question->fill($data);
+
+            $status = $quiz_question->save();
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'The record already exists.',
+                'status' => 0],
+                HttpResponse::HTTP_CONFLICT);
+        }
+
+        return response()->json([
+            'message' => 'The question has been added to the quiz.',
+            'status' => $status
+        ]);
     }
 }
