@@ -21,10 +21,17 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'api/v1'], function (){
     Route::delete('/subject/{id}', 'SubjectController@destroy');
 
     //Tutorials routes
-    Route::get('/subjects', 'TutorialController@index');
-    Route::post('/subject', 'TutorialController@create');
-    Route::get('/subject/{id}', 'TutorialController@show');
-    Route::put('/subject/{id}', 'TutorialController@update');
-    Route::delete('/subject/{id}', 'TutorialController@destroy');
+    Route::get('/tutorials', 'TutorialController@index');
+    Route::post('/tutorial', 'TutorialController@create');
+    Route::get('/tutorial/{id}', 'TutorialController@show');
+    Route::put('/tutorial/{id}', 'TutorialController@update');
+    Route::delete('/tutorial/{id}', 'TutorialController@destroy');
+
+    //Quizzes routes
+    Route::get('/quizzes', 'QuizController@index');
+    Route::post('/quiz', 'QuizController@create');
+    Route::get('/quiz/{id}', 'QuizController@show');
+    Route::put('/quiz/{id}', 'QuizController@update');
+    Route::delete('/quiz/{id}', 'QuizController@destroy');
 
 });
