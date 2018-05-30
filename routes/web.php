@@ -22,7 +22,7 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'api/v1'], function (){
     Route::put('/subject/{id}', 'SubjectController@update');
     Route::delete('/subject/{id}', 'SubjectController@destroy');
 
-    Route::post('/subject/tutorial-assignment', 'CourseController@assignTutorial');
+    Route::post('/subject/tutorial-assignment', 'SubjectController@assignTutorial');
 
     //Tutorials routes
     Route::get('/tutorials', 'TutorialController@index');
@@ -37,6 +37,8 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'api/v1'], function (){
     Route::get('/quiz/{id}', 'QuizController@show');
     Route::put('/quiz/{id}', 'QuizController@update');
     Route::delete('/quiz/{id}', 'QuizController@destroy');
+
+    Route::post('/quiz/question-assignment', 'QuizController@assignQuestion');
 
     //Questions routes
     Route::get('/questions', 'QuestionController@index');
