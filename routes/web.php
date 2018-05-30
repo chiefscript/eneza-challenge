@@ -34,4 +34,11 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'api/v1'], function (){
     Route::put('/quiz/{id}', 'QuizController@update');
     Route::delete('/quiz/{id}', 'QuizController@destroy');
 
+    //Questions routes
+    Route::get('/questions', 'QuestionController@index');
+    Route::post('/question', 'QuestionController@create');
+    Route::get('/question/{id}', 'QuestionController@show');
+    Route::put('/question/{id}', 'QuestionController@update');
+    Route::delete('/question/{id}', 'QuestionController@destroy');
+
 });
