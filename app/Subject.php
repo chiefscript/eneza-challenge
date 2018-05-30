@@ -10,4 +10,9 @@ class Subject extends Model
     use SoftDeletes;
 
     protected $fillable = ['name'];
+
+    public function tutorials()
+    {
+        return $this->hasMany(SubjectTutorial::class);
+    }
 }
