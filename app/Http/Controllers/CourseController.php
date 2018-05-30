@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\CourseSubject;
+use App\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CourseController extends Controller
 {
@@ -71,5 +74,61 @@ class CourseController extends Controller
         $course = Course::find($id);
         $course->delete();
         return response()->json('The course has been deleted successfully');
+    }
+
+    public function assignSubject(Request $request)
+    {
+        $data = $request->only('course_id', 'subject_id');
+
+        $validator = Validator::make($request->all(), [
+            'course_id' => 'required',
+            'subject_id' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()->all()
+            ], 422);
+        }
+
+        try {
+            $course = Course::find($request->course_id);
+            $subject = Subject::find($request->subject_id);
+
+            if (!$course) {
+                return response()->json([
+                    'message' => 'The course selected does not exist',
+                    'status' => 0
+                ]);
+            }
+
+            if (!$subject) {
+                return response()->json([
+                    'message' => 'The subject selected does not exist',
+                    'status' => 0
+                ]);
+            }
+
+            $course_subject = CourseSubject::firstOrNew([
+                'course_id' => $request->course_id,
+                'subject_id' => $request->subject_id
+            ]);
+
+            $course_subject->fill($data);
+
+            $status = $course_subject->save();
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'The record already exists.',
+                'status' => 0],
+                HttpResponse::HTTP_CONFLICT);
+        }
+
+        return response()->json([
+            'message' => $subject->name . ' has been added to ' . $course->name,
+            'status' => $status
+        ]);
     }
 }
