@@ -7,6 +7,7 @@ use App\CourseSubject;
 use App\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response as HttpResponse;
 
 class CourseController extends Controller
 {
@@ -17,7 +18,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::all();
+        $courses = Course::with('subjects')->get();
         return response()->json($courses);
     }
 

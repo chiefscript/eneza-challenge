@@ -10,4 +10,9 @@ class Course extends Model
     use SoftDeletes;
 
     protected $fillable = ['name'];
+
+    public function subjects()
+    {
+        return $this->hasMany(CourseSubject::class);
+    }
 }
