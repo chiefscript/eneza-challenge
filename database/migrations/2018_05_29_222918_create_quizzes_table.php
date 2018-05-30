@@ -15,7 +15,7 @@ class CreateQuizzesTable extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('question');
+            $table->string('name');
             $table->nullableTimestamps();
             $table->softDeletes();
         });
