@@ -10,4 +10,9 @@ class Quiz extends Model
     use SoftDeletes;
 
     protected $fillable = ['name'];
+
+    public function questions()
+    {
+        return $this->hasMany(QuizQuestion::class);
+    }
 }
